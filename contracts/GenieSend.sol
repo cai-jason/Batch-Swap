@@ -43,13 +43,13 @@ contract GenieSend {
                 erc1155transfers[i].recipients.length == erc1155transfers[i].tokenIds.length,
                 "Mismatched recipients and tokenIds length in ERC 1155"
             );
-            ERC1155Transfer transfer = erc1155transfers[i];
-            for (uint j=0; j < transfer.recipients.length; j++) {
-                IERC1155(transfer.erc1155).safeTransferFrom(
+            for (uint j=0; j < erc1155transfers[i].recipients.length; j++) {
+                IERC1155(erc1155transfers[i].erc1155).safeTransferFrom(
                     msg.sender,
-                    trasnfer.recipients[j]
-                    transfer.tokenIds[j],
-                    transfer.quantities[j]
+                    erc1155transfers[i].recipients[j],
+                    erc1155transfers[i].tokenIds[j],
+                    erc1155transfers[i].quantities[j],
+                    ""
                 );
             }
         }
