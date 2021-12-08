@@ -1,6 +1,6 @@
 # use Ganache's forked mainnet mode as the default network
 networks:
-  default: ropsten
+  default: mainnet-fork
 
 # automatically fetch contract sources from Etherscan
 autofetch_sources: True
@@ -17,3 +17,4 @@ compiler:
 wallets:
   from_key: ${PRIVATE_KEY}
   from_mnemonic: ${MNEMONIC}
+  from_key_2: ${PRIVATE_KEY_2}
