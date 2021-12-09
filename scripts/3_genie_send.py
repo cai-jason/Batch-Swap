@@ -17,41 +17,59 @@ def main():
     genie_send = GenieSend[-1]
     my_erc721 = MyErc721[-1]
     my_erc1155 = MyErc1155[-1]
-    network.priority_fee('1.2 gwei')
+    network.priority_fee('1 gwei')
 
-    my_erc721.setIndex(10, {'from': acct1})
-    my_erc721.mintTokens({'from': acct1})    
-    my_erc721.setApprovalForAll(genie_send, True, {'from': acct1})
-
-    my_erc1155.setApprovalForAll(genie_send, True, {'from': acct1})
-
-    recipients = [ acct2 ] * 10 
-    token_ids = list(range(10))
-
+    # my_erc721.setIndex(10, {'from': acct1})
+    # my_erc721.mintTokens({'from': acct1})    
+    erc721_recipients = [ acct2 ] * 10 
+    erc721_token_ids = list(range(10))
     erc721_transfer = [(
         my_erc721,
-        recipients,
-        token_ids
+        erc721_recipients,
+        erc721_token_ids
     )]
+    my_erc721.setApprovalForAll(genie_send, True, {'from': acct1})
+
+    erc1155_recipients = [ acct2 ] * 10
+    erc1155_token_ids = list(range(10))
+    erc1155_quantities = [ 1 ] * 10
+    erc1155_transfer = [(
+        my_erc1155,
+        erc1155_recipients,
+        erc1155_token_ids,
+        erc1155_quantities
+    )]
+    my_erc1155.setApprovalForAll(genie_send, True, {'from': acct1})
+
     genie_send.multisend(
         erc721_transfer, 
-        [],
+        erc1155_transfer,
         {'from': acct1}
     )
 
-    recipients = [ acct1 ] * 10 
-    token_ids = list(range(10))
-
-    my_erc721.setApprovalForAll(genie_send, True, {'from': acct2})
-
+    erc721_recipients = [ acct1 ] * 10 
+    erc721_token_ids = list(range(10))
     erc721_transfer = [(
         my_erc721,
-        recipients,
-        token_ids
+        erc721_recipients,
+        erc721_token_ids
     )]
+    my_erc721.setApprovalForAll(genie_send, True, {'from': acct2})
+
+    erc1155_recipients = [ acct1 ] * 10
+    erc1155_token_ids = list(range(10))
+    erc1155_quantities = [ 1 ] * 10
+    erc1155_transfer = [(
+        my_erc1155,
+        erc1155_recipients,
+        erc1155_token_ids,
+        erc1155_quantities
+    )]
+    my_erc1155.setApprovalForAll(genie_send, True, {'from': acct2})
+
     genie_send.multisend(
-        erc721_transfer, 
-        [],
+        erc721_transfer,
+        erc1155_transfer,
         {'from': acct2}
     )
 

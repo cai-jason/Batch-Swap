@@ -11,17 +11,17 @@ def main():
         config["wallets"]["from_key_3"]
     )
 
+    network.priority_fee('1 gwei')
     # myErc1155 = MyErc1155.deploy(
     #     {"from": acct1}
     # )
-    network.priority_fee('2 gwei')
     myErc1155 = MyErc1155[-1]
     for i in range(0, 10):
         myErc1155.safeTransferFrom(
             acct1,
             acct2,
-            0,
             i,
+            1,
             "",
             {'from': acct1}
         )
@@ -29,8 +29,8 @@ def main():
         myErc1155.safeTransferFrom(
             acct2,
             acct1,
-            0,
             i,
+            1,
             "",
             {'from': acct2}
         )
