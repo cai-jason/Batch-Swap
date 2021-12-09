@@ -5,5 +5,6 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 contract MyErc1155 is ERC1155 {
     constructor() public ERC1155("") {
+        _mint(msg.sender, 0, 100, "");
     }
 }
