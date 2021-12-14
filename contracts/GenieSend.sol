@@ -8,45 +8,41 @@ contract GenieSend {
 
     struct Erc721Transfer {
         address erc721;
-        address[] recipients;
+        address recipient;
         uint[] tokenIds;
     }
 
     struct Erc1155Transfer {
         address erc1155;
-        address[] recipients;
+        address recipient;
         uint[] tokenIds;
         uint[] quantities;
     }
 
     constructor() {}
 
-    function multisend(
+    function batchSend(
         Erc721Transfer[] calldata erc721transfers,
         Erc1155Transfer[] calldata erc1155transfers
     ) public {
         for (uint i=0; i < erc721transfers.length; i++) {
-            require(
-                erc721transfers[i].recipients.length == erc721transfers[i].tokenIds.length,
-                "Mismatched recipients and tokenIds length in ERC 721"
-            );
-            for (uint j=0; j < erc721transfers[i].recipients.length; j++) {
+            for (uint j=0; j < erc721transfers[i].tokenIds.length; j++) {
                 IERC721(erc721transfers[i].erc721).safeTransferFrom(
                     msg.sender,
-                    erc721transfers[i].recipients[j],
+                    erc721transfers[i].recipient,
                     erc721transfers[i].tokenIds[j]
                 );
             }
         }
         for (uint i=0; i < erc1155transfers.length; i++) {
             require(
-                erc1155transfers[i].recipients.length == erc1155transfers[i].tokenIds.length,
-                "Mismatched recipients and tokenIds length in ERC 1155"
+                erc1155transfers[i].tokenIds.length == erc1155transfers[i].quantities.length,
+                "Mismatched tokenIds and quantities length in ERC 1155"
             );
-            for (uint j=0; j < erc1155transfers[i].recipients.length; j++) {
+            for (uint j=0; j < erc1155transfers[i].tokenIds.length; j++) {
                 IERC1155(erc1155transfers[i].erc1155).safeTransferFrom(
                     msg.sender,
-                    erc1155transfers[i].recipients[j],
+                    erc1155transfers[i].recipient,
                     erc1155transfers[i].tokenIds[j],
                     erc1155transfers[i].quantities[j],
                     ""
